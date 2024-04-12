@@ -70,7 +70,7 @@ public class BlacklistService {
     public BlacklistLog removeBlacklistedItem(int itemId, String reason) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ApiException("Item not found with id: " + itemId));
-System.out.println("item: " +item);
+    System.out.println("item: " +item);
         Blacklist blacklist = blacklistRepository.findByItem(item);
         System.out.println("blacklist: " +blacklist);
         if (blacklist == null) {
