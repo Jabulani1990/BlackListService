@@ -21,6 +21,8 @@ public class Blacklist {
 
     private String item;
 
+    private String category;
+
     @Column(nullable = false)
     private String reason;
 

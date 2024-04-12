@@ -16,6 +16,9 @@ public class FromDbToBlackListDto {
     private Long itemId;
 
     private String item;
+
+    private String category;
+
     private String reason;
 
     private LocalDateTime createdAt;
@@ -26,6 +29,7 @@ public class FromDbToBlackListDto {
         this.itemId = blacklist.getId();
         this.item = blacklist.getItem();
         this.reason = blacklist.getReason();
+        this.category = blacklist.getCategory();
         this.createdAt = blacklist.getCreatedAt();
         this.updatedAt = blacklist.getUpdatedAt();
     }

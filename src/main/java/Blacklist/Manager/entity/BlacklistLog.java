@@ -22,6 +22,8 @@ public class BlacklistLog {
 
     private String blacklistItem;
 
+    private String blacklistItemCategory;
+
     @Column(name = "removed_reason", nullable = false)
     private String removedReason;
 

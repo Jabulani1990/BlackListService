@@ -8,20 +8,17 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Item")
+@Table(name = "CATEGORY")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Item {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String itemName;
+    private String categoryName;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "category", referencedColumnName = "categoryName")
-    private Category category;
 }

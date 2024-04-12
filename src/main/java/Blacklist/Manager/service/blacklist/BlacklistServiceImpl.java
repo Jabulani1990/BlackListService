@@ -5,10 +5,12 @@ import Blacklist.Manager.dto.BlacklistDTO;
 import Blacklist.Manager.dto.FromDbToBlackListDto;
 import Blacklist.Manager.entity.Blacklist;
 import Blacklist.Manager.entity.BlacklistLog;
+import Blacklist.Manager.entity.Category;
 import Blacklist.Manager.entity.Item;
 import Blacklist.Manager.exception.ApiException;
 import Blacklist.Manager.repository.BlacklistLogRepository;
 import Blacklist.Manager.repository.BlacklistRepository;
+import Blacklist.Manager.repository.CategoryRepository;
 import Blacklist.Manager.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +28,8 @@ public class BlacklistServiceImpl implements BlacklistService{
 
     private final BlacklistRepository blacklistRepository;
     private final BlacklistLogRepository blacklistLogRepository;
+    private final CategoryRepository categoryRepository;
+
     private final ItemRepository itemRepository;
 
 
@@ -48,9 +52,10 @@ public class BlacklistServiceImpl implements BlacklistService{
     @Override
     public AppResponse<String> addBlacklistedItem(BlacklistDTO blacklistDTO) {
         Item item = itemRepository.findByItemName(blacklistDTO.getItemName())
-                .orElseThrow(() -> new ApiException("Item not found with id"));
+                .orElseThrow(() -> new ApiException("Item not found"));
 
         String nameOfItem = item.getItemName();
+        String itemCategory = item.getCategory().getCategoryName();
 
 
         boolean existingBlacklist = blacklistRepository.existsByItem(nameOfItem);
@@ -60,6 +65,7 @@ public class BlacklistServiceImpl implements BlacklistService{
 
         Blacklist blacklist = new Blacklist();
         blacklist.setItem(nameOfItem);
+        blacklist.setCategory(itemCategory);
         blacklist.setReason(blacklistDTO.getReason());
         blacklist.setCreatedAt(LocalDateTime.now());
         blacklist.setUpdatedAt(LocalDateTime.now());
@@ -78,11 +84,13 @@ public class BlacklistServiceImpl implements BlacklistService{
         Blacklist blacklist = blacklistRepository.findByItem(blacklistDTO.getItemName()).
                 orElseThrow(() -> new ApiException("item not found"));
 
+        String blackItemCategory = blacklist.getCategory();
 
         blacklistRepository.delete(blacklist);
 
         BlacklistLog blacklistLog = new BlacklistLog();
         blacklistLog.setBlacklistItem(blacklistDTO.getItemName());
+        blacklistLog.setBlacklistItemCategory(blackItemCategory);
         blacklistLog.setRemovedReason(blacklistDTO.getReason());
         blacklistLog.setRemovedAt(LocalDateTime.now());
 
@@ -91,6 +99,16 @@ public class BlacklistServiceImpl implements BlacklistService{
 
         Item sendItem = new Item();
         sendItem.setItemName(blacklistDTO.getItemName());
+
+        Category category = categoryRepository.findByCategoryName(blackItemCategory);
+
+        if (category == null) {
+            Category newCategory = new Category();
+            newCategory.setCategoryName(blackItemCategory);
+            sendItem.setCategory(newCategory);
+        }else{
+            sendItem.setCategory(category);
+        }
 
         itemRepository.save(sendItem);
 
@@ -106,10 +124,8 @@ public class BlacklistServiceImpl implements BlacklistService{
         BeanUtils.copyProperties(blacklistDTO, existingBlacklist);
         Blacklist updatedBlacklist = blacklistRepository.save(existingBlacklist);
 
-        return new AppResponse<>("succesfully updated", updatedBlacklist);
+        return new AppResponse<>("successfully updated", updatedBlacklist);
 
     }
-
-
 
 }

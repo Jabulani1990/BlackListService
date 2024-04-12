@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/update")
+    @PostMapping("/create_password")
     public ResponseEntity<AppResponse<Map<String, Object>>> createUser(@Valid @RequestBody CreatePasswordDto request){
         return ResponseEntity.ok(authService.createPassword(request));
     }
