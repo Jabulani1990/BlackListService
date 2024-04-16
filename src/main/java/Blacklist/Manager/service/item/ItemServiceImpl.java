@@ -3,9 +3,8 @@ package Blacklist.Manager.service.item;
 import Blacklist.Manager.dto.AppResponse;
 import Blacklist.Manager.dto.FromDbToItemDto;
 import Blacklist.Manager.dto.ItemDTO;
-import Blacklist.Manager.entity.Category;
+import Blacklist.Manager.entity.ItemCategory;
 import Blacklist.Manager.entity.Item;
-import Blacklist.Manager.entity.Role;
 import Blacklist.Manager.repository.CategoryRepository;
 import Blacklist.Manager.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public AppResponse<Map<String, Object>> getAllItems(Pageable pageable) {
-       Page<FromDbToItemDto> items = itemRepository.findAll(pageable).map(FromDbToItemDto::new);
+       Page<FromDbToItemDto> items = itemRepository.findAllNotDeleted(pageable).map(FromDbToItemDto::new);
 
         Map<String, Object> page = Map.of(
                 "page", items.getNumber(),
@@ -43,14 +42,14 @@ public class ItemServiceImpl implements ItemService {
         Item newItems = new Item();
         newItems.setItemName(itemDto.getItemName());
 
-        Category category = categoryRepository.findByCategoryName(itemDto.getCategory());
+        ItemCategory itemCategory = categoryRepository.findByCategoryName(itemDto.getCategory());
 
-        if (category == null) {
-            Category newCategory = new Category();
-            newCategory.setCategoryName(itemDto.getCategory());
-            newItems.setCategory(newCategory);
+        if (itemCategory == null) {
+            ItemCategory newItemCategory = new ItemCategory();
+            newItemCategory.setCategoryName(itemDto.getCategory());
+            newItems.setItemCategory(newItemCategory);
         }else{
-            newItems.setCategory(category);
+            newItems.setItemCategory(itemCategory);
         }
 
         Item savedItem =itemRepository.save(newItems);

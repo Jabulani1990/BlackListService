@@ -21,7 +21,10 @@ public class Item {
     @Column(nullable = false)
     private String itemName;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "category", referencedColumnName = "categoryName")
-    private Category category;
+    @JoinColumn(name = "itemCategory", referencedColumnName = "categoryName")
+    private ItemCategory itemCategory;
 }

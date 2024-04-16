@@ -31,9 +31,13 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ApiException("email not found"));
 
-        if (user.getPassword() == null) user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (user.getPassword() == null) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+        } else {
+            return new AppResponse<>(0, "your password is not empty");
+        }
 
-        userRepository.save(user);
 
         return  new AppResponse<>(0,"Password Successfully Created", Map.of(
                 "id", user.getId(),

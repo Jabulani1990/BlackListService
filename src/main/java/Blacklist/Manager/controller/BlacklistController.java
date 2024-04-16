@@ -37,7 +37,7 @@ public class BlacklistController {
     }
 
     @PreAuthorize("hasRole('ROLE_BLACKLIST_ADMIN')")
-    @PostMapping("/remove")
+    @DeleteMapping("/remove")
     public ResponseEntity<AppResponse<String>> removeBlacklistedItem(@Valid @RequestBody BlacklistDTO blacklistDTO ) {
         return ResponseEntity.ok(blacklistService.removeBlacklistedItem(blacklistDTO));
     }

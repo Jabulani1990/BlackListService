@@ -13,7 +13,6 @@ public class BlacklistDTO {
     @NotEmpty(message = "itemName should not be blank")
     private String itemName;
 
-
     @NotEmpty(message = "Reasons should not be blank")
     private String reason;
 

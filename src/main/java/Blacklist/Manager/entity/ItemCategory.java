@@ -6,14 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "CATEGORY")
+@Table(name = "CATEGORYS")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Category {
+public class ItemCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
