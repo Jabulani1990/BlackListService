@@ -38,7 +38,6 @@ public class AuthServiceImpl implements AuthService {
             return new AppResponse<>(0, "your password is not empty");
         }
 
-
         return  new AppResponse<>(0,"Password Successfully Created", Map.of(
                 "id", user.getId(),
                 "email", user.getEmail()
@@ -61,6 +60,5 @@ public class AuthServiceImpl implements AuthService {
         var jwtToken = jwtService.generateToken(user);
 
         return  new AppResponse<>(0,"Successfully logged in", jwtToken);
-
     }
 }
