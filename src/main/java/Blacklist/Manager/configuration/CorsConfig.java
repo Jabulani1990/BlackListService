@@ -32,7 +32,7 @@ public class CorsConfig extends OncePerRequestFilter {
                                      FilterChain filterChain) throws ServletException, IOException
     {
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Method", "GET,POST,OPTIONS,DELETE");
+        response.setHeader("Access-Control-Allow-Method", "GET,POST,DELETE,OPTIONS");
         response.setHeader("Access-Control-Allow-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
         response.setHeader("Access-Control-Allow-Expose-Headers", "Authorization, accept, Content-Type, origin");

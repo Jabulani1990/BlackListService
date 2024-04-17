@@ -25,6 +25,5 @@ public class FromDbToItemDto {
     }
 
 
-    public FromDbToItemDto(List<Item> items) {
-    }
+
 }
